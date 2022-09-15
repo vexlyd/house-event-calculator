@@ -6,7 +6,7 @@ from tkinter import messagebox
 tk = tkinter
 main = Tk()
 main.title("House Event Calculator")
-main.geometry("500x300")
+main.geometry("400x330")
 
 # List to hold all events
 total_house_events = []
@@ -17,10 +17,7 @@ event_names_list = ["Lampada Games", "House Trivia"]
 # Creating the frames for the GUI.
 input_frame = LabelFrame(main)
 input_frame.grid(row=0, column=0, padx=10, pady=10, sticky=W)
-details_frame = LabelFrame(main, width="100")
-details_frame.grid(row=1, column=0, sticky=S)
-leaderboard_frame = LabelFrame(main)
-leaderboard_frame.grid(row=0, column=1, padx=10, pady=10, sticky=N)
+
 
 
 # Creating the labels for the GUI.
@@ -31,16 +28,14 @@ tk.Label(input_frame, text="Pohutukawa").grid(column=0, row=3, sticky=W)
 tk.Label(input_frame, text="Kauri").grid(column=0, row=4, sticky=W)
 tk.Label(input_frame, text="Rimu").grid(column=0, row=5, sticky=W)
 
-
-# Creating an entry box for the user to input the name of the event.
-event_name_input = tk.Entry(input_frame)
-
 # Creating a radio button to allow the user to input if the event is a sport or nor
 is_sport = tk.StringVar()
 is_sport.set("Yes")
 Radiobutton(input_frame, text="Yes", variable=is_sport, value="Yes").grid(column=1, row=0)
 Radiobutton(input_frame, text="No", variable=is_sport, value="No").grid(column=2, row=0)
 
+# Creating an entry box for the user to input the name of the event.
+event_name_input = tk.Entry(input_frame)
 
 # Creating entry boxes for the user to input the points for each house.
 yellow_points = Entry(input_frame)
@@ -57,11 +52,11 @@ green_points.grid(column=1, row=5, columnspan=2)
 
 
 # Creating labels for the leaderboard and positioning them.
-Label(leaderboard_frame, text="LEADERBOARD").grid(column=0, row=0, columnspan=2)
-Label(leaderboard_frame, text="Kowhai").grid(column=0, row=1, sticky=W, pady=5)
-Label(leaderboard_frame, text="Pohutukawa").grid(column=0, row=2, sticky=W, pady=5)
-Label(leaderboard_frame, text="Kauri").grid(column=0, row=3, sticky=W, pady=5)
-Label(leaderboard_frame, text="Rimu").grid(column=0, row=4, sticky=W, pady=5)
+Label(input_frame, text="LEADERBOARD").grid(column=2, row=6, columnspan=2)
+Label(input_frame, text="Kowhai").grid(column=2, row=7, sticky=W, pady=5)
+Label(input_frame, text="Pohutukawa").grid(column=2, row=8, sticky=W, pady=5)
+Label(input_frame, text="Kauri").grid(column=2, row=9, sticky=W, pady=5)
+Label(input_frame, text="Rimu").grid(column=2, row=10, sticky=W, pady=5)
 
 
 # It creates an object called Event, which has a name, event type, points for each house, and a winner
@@ -74,6 +69,7 @@ class Event:
         self.blue_p = blue_p
         self.green_p = green_p
         self.who_won = who_won
+
 # Prints out the data added by the user 
     def details(self):
         return(["Event Name " + self.name, "Is it a sport " + self.event_type, "Kowhai " + str(self.yellow_p) + " Points", "Pohutukawa " + str(self.red_p) + " Points", "Kauri " + str(self.blue_p) + " Points", "Rimu " + str(self.green_p) + " Points", "Winner " + self.who_won])
@@ -88,8 +84,8 @@ total_house_events.append(Event("House Trivia", "No", 66, 68, 74, 73, "Kowhai"))
 chosen_event = tkinter.StringVar()
 chosen_event.set("Choose a event")
 
-event_name = tkinter.OptionMenu(details_frame, chosen_event, *event_names_list, "")
-event_name.grid(row=0, column=1)
+event_name = tkinter.OptionMenu(input_frame, chosen_event, *event_names_list, "")
+event_name.grid(row=8, column=0)
 
 # It takes the total points of each team and displays them in the leaderboard frame.
 def leaderboard(total_yellow_points, total_red_points, total_blue_points, total_green_points):
@@ -98,10 +94,10 @@ def leaderboard(total_yellow_points, total_red_points, total_blue_points, total_
         total_red_points += data.red_p
         total_blue_points += data.blue_p
         total_green_points += data.green_p
-    Label(leaderboard_frame, text=total_yellow_points).grid(column=1, row=1, sticky=W)
-    Label(leaderboard_frame, text=total_red_points).grid(column=1, row=2, sticky=W)
-    Label(leaderboard_frame, text=total_blue_points).grid(column=1, row=3, sticky=W)
-    Label(leaderboard_frame, text=total_green_points).grid(column=1, row=4, sticky=W)
+    Label(input_frame, text=total_yellow_points).grid(column=3, row=7, sticky=W)
+    Label(input_frame, text=total_red_points).grid(column=3, row=8, sticky=W)
+    Label(input_frame, text=total_blue_points).grid(column=3, row=9, sticky=W)
+    Label(input_frame, text=total_green_points).grid(column=3, row=10, sticky=W)
 
 # It takes the values from the entry boxes and assigns them to variables.
 def save():
@@ -153,8 +149,8 @@ def save():
             event_name.destroy()
             chosen_event = tkinter.StringVar()
             chosen_event.set("Choose a event")
-            event_name = tkinter.OptionMenu(details_frame, chosen_event, *event_names_list)
-            event_name.grid(row=0, column=1)
+            event_name = tkinter.OptionMenu(input_frame, chosen_event, *event_names_list)
+            event_name.grid(row=8, column=0)
     # Checking if the name of the event is in the list of events. If it is, it will display a message
     # saying that an event with that name has already been added.
     elif name in event_names_list:
@@ -168,13 +164,13 @@ def print_details():
         if input == info.name:
             global event_name
             event_name.destroy()
-            event_name = tkinter.OptionMenu(details_frame, chosen_event, *event_names_list)
-            event_name.grid(row=0, column=1)
+            event_name = tkinter.OptionMenu(input_frame, chosen_event, *event_names_list)
+            event_name.grid(row=8, column=0)
             tkinter.messagebox.showinfo("Chosen event details","\n".join(info.details()))
 
 # Creating buttons that will be used to save the details, show the details, and show the leaderboard.
-tkinter.Button(input_frame, text="Save Details", command=save).grid(row=7, column=0, columnspan=3, pady=5)
-tkinter.Button(details_frame, text="Show Scores", command=print_details).grid(column=1, row=1, columnspan=1)
+tkinter.Button(input_frame, text="Save Details", command=save).grid(row=7, column=0)
+tkinter.Button(input_frame, text="Show Scores", command=print_details).grid(row=9, column=0)
 
 
 main.mainloop()
